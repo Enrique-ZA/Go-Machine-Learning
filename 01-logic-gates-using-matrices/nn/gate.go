@@ -18,9 +18,9 @@ type Gate struct {
     Expected []float64
 }
 
-func GateCreate(x *Matrix, w1 *Matrix, b1 *Matrix, a1 *Matrix, w2 *Matrix, b2 *Matrix, a2 *Matrix) *Gate {
-    return &Gate{
-        X: *x, W1: *w1, B1: *b1, a1: *a1, W2: *w2, B2: *b2, A2: *a2,
+func GateCreate(x Matrix, w1 Matrix, b1 Matrix, a1 Matrix, w2 Matrix, b2 Matrix, a2 Matrix) Gate {
+    return Gate{
+        X: x, W1: w1, B1: b1, a1: a1, W2: w2, B2: b2, A2: a2,
     }
 }
 
@@ -175,4 +175,5 @@ func GateForward(gate *Gate) *Gate {
     
     return gate
 }
+
 

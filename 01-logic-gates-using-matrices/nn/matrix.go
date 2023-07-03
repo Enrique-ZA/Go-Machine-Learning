@@ -13,16 +13,16 @@ type Matrix struct {
     Samples []float64
 }
 
-func MatrixCreate(numRows *int, numCols *int) *Matrix {
-    arr := make([]float64, *numRows * *numCols)
-    return &Matrix{rows: *numRows, cols: *numCols, Stride: *numCols, Samples: arr}
+func MatrixCreate(numRows int, numCols int) Matrix {
+    arr := make([]float64, numRows * numCols)
+    return Matrix{rows: numRows, cols: numCols, Stride: numCols, Samples: arr}
 }
 
-func MatrixRandomize(mat *Matrix, low *float64, high *float64) *Matrix {
+func MatrixRandomize(mat *Matrix, low float64, high float64) *Matrix {
     for i := 0; i < mat.rows; i++ {
         for j := 0; j < mat.cols; j++ {
             rnd := rand.Float64() 
-            mat.Samples[mat.cols * i + j] = rnd * (*high - *low) + *low;
+            mat.Samples[mat.cols * i + j] = rnd * (high - low) + low;
         }
     }
     return mat;
@@ -98,18 +98,19 @@ func MatrixCopy(dst *Matrix, src *Matrix) (*Matrix, error) {
     return dst, nil
 }
 
-func MatrixSlice(arr *[]float64, rows *int, cols *int, step *int, start *int) *[]float64 {
+func MatrixSlice(arr []float64, rows int, cols int, step int, start int) []float64 {
     // if (arr == undefined) throw new Error("array is undefined");
     temp := []float64{} 
-    index := *start 
-    for i := 0; i < *rows; i++ {
-        for j := 0; j < *cols; j++ {
-            if (index < len(*arr)) {
-                temp = append(temp, (*arr)[index])
+    index := start 
+    for i := 0; i < rows; i++ {
+        for j := 0; j < cols; j++ {
+            if (index < len(arr)) {
+                temp = append(temp, (arr)[index])
                 index++;
             }
         }
-        index += *step - *cols; 
+        index += step - cols; 
     }
-    return &temp;
+    return temp;
 }
+
