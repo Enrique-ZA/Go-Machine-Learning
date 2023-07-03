@@ -102,8 +102,8 @@ func main() {
     var rate = 1e-1
 
     for i := 0; i < 50*1000; i++ {
-        nn.GateFiniteDiff(&gate, &gradient, &epsilon, &ti, &to)
-        nn.GateLearn(&gate, &gradient, &rate);
+        nn.GateFiniteDiff(&gate, &gradient, epsilon, &ti, &to)
+        nn.GateLearn(&gate, &gradient, rate);
     }
 
     for i := 0; i < 2; i++ {

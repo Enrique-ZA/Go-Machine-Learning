@@ -50,33 +50,33 @@ func GateLoss(gate *Gate, ti *Matrix, to *Matrix) (*float64, error) {
     return &result, nil
 }
 
-func GateLearn(gate *Gate, gradient *Gate, rate *float64){
+func GateLearn(gate *Gate, gradient *Gate, rate float64){
     for i := 0; i < gate.W1.rows; i++ {
         for j := 0; j < gate.W1.cols; j++ {
-            gate.W1.Samples[gate.W1.cols * i + j] -= gradient.W1.Samples[gradient.W1.cols * i + j] * *rate 
+            gate.W1.Samples[gate.W1.cols * i + j] -= gradient.W1.Samples[gradient.W1.cols * i + j] * rate 
         }
     }
 
     for i := 0; i < gate.B1.rows; i++ {
         for j := 0; j < gate.B1.cols; j++ {
-            gate.B1.Samples[gate.B1.cols * i + j] -= gradient.B1.Samples[gradient.B1.cols * i + j] * *rate 
+            gate.B1.Samples[gate.B1.cols * i + j] -= gradient.B1.Samples[gradient.B1.cols * i + j] * rate 
         }
     }
 
     for i := 0; i < gate.W2.rows; i++ {
         for j := 0; j < gate.W2.cols; j++ {
-            gate.W2.Samples[gate.W2.cols * i + j] -= gradient.W2.Samples[gradient.W2.cols * i + j] * *rate 
+            gate.W2.Samples[gate.W2.cols * i + j] -= gradient.W2.Samples[gradient.W2.cols * i + j] * rate 
         }
     }
 
     for i := 0; i < gate.B2.rows; i++ {
         for j := 0; j < gate.B2.cols; j++ {
-            gate.B2.Samples[gate.B2.cols * i + j] -= gradient.B2.Samples[gradient.B2.cols * i + j] * *rate 
+            gate.B2.Samples[gate.B2.cols * i + j] -= gradient.B2.Samples[gradient.B2.cols * i + j] * rate 
         }
     }
 }
 
-func GateFiniteDiff(gate *Gate, gradient *Gate, epsilon *float64, ti *Matrix, to *Matrix) {
+func GateFiniteDiff(gate *Gate, gradient *Gate, epsilon float64, ti *Matrix, to *Matrix) {
     var saved float64
 
     loss, err := GateLoss(gate, ti, to)
@@ -88,13 +88,13 @@ func GateFiniteDiff(gate *Gate, gradient *Gate, epsilon *float64, ti *Matrix, to
     for i := 0; i < gate.W1.rows; i++ {
         for j := 0; j < gate.W1.cols; j++ {
             saved = gate.W1.Samples[gate.W1.cols * i + j]
-            gate.W1.Samples[gate.W1.cols * i + j] += *epsilon
+            gate.W1.Samples[gate.W1.cols * i + j] += epsilon
             newLoss, err := GateLoss(gate, ti, to)
             if err != nil {
                 fmt.Println("Error in GateFiniteDiff:", err)
                 return
             }
-            gradient.W1.Samples[gradient.W1.cols * i + j] = (*newLoss - *loss) / *epsilon
+            gradient.W1.Samples[gradient.W1.cols * i + j] = (*newLoss - *loss) / epsilon
             gate.W1.Samples[gate.W1.cols * i + j] = saved
         }
     }
@@ -102,13 +102,13 @@ func GateFiniteDiff(gate *Gate, gradient *Gate, epsilon *float64, ti *Matrix, to
     for i := 0; i < gate.B1.rows; i++ {
         for j := 0; j < gate.B1.cols; j++ {
             saved = gate.B1.Samples[gate.B1.cols * i + j]
-            gate.B1.Samples[gate.B1.cols * i + j] += *epsilon
+            gate.B1.Samples[gate.B1.cols * i + j] += epsilon
             newLoss, err := GateLoss(gate, ti, to)
             if err != nil {
                 fmt.Println("Error in GateLoss:", err)
                 return
             }
-            gradient.B1.Samples[gradient.B1.cols * i + j] = (*newLoss - *loss) / *epsilon
+            gradient.B1.Samples[gradient.B1.cols * i + j] = (*newLoss - *loss) / epsilon
             gate.B1.Samples[gate.B1.cols * i + j] = saved
         }
     }
@@ -116,13 +116,13 @@ func GateFiniteDiff(gate *Gate, gradient *Gate, epsilon *float64, ti *Matrix, to
     for i := 0; i < gate.W2.rows; i++ {
         for j := 0; j < gate.W2.cols; j++ {
             saved = gate.W2.Samples[gate.W2.cols * i + j]
-            gate.W2.Samples[gate.W2.cols * i + j] += *epsilon
+            gate.W2.Samples[gate.W2.cols * i + j] += epsilon
             newLoss, err := GateLoss(gate, ti, to)
             if err != nil {
                 fmt.Println("Error in GateLoss:", err)
                 return
             }
-            gradient.W2.Samples[gradient.W2.cols * i + j] = (*newLoss - *loss) / *epsilon
+            gradient.W2.Samples[gradient.W2.cols * i + j] = (*newLoss - *loss) / epsilon
             gate.W2.Samples[gate.W2.cols * i + j] = saved
         }
     }
@@ -130,13 +130,13 @@ func GateFiniteDiff(gate *Gate, gradient *Gate, epsilon *float64, ti *Matrix, to
     for i := 0; i < gate.B2.rows; i++ {
         for j := 0; j < gate.B2.cols; j++ {
             saved = gate.B2.Samples[gate.B2.cols * i + j]
-            gate.B2.Samples[gate.B2.cols * i + j] += *epsilon
+            gate.B2.Samples[gate.B2.cols * i + j] += epsilon
             newLoss, err := GateLoss(gate, ti, to)
             if err != nil {
                 fmt.Println("Error in GateLoss:", err)
                 return
             }
-            gradient.B2.Samples[gradient.B2.cols * i + j] = (*newLoss - *loss) / *epsilon
+            gradient.B2.Samples[gradient.B2.cols * i + j] = (*newLoss - *loss) / epsilon
             gate.B2.Samples[gate.B2.cols * i + j] = saved
         }
     }
